@@ -2,11 +2,74 @@
   "name": "@template/shared",
   "version": "1.0.0",
   "main": "dist/index.js",
-  "scripts": {
-    "build": "tsc"
-  },
   "keywords": [],
-  "author": "",
+  "author": "Joaquin",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "scripts": {
+    "build": "rimraf -rf .build && tsc -b",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "npm run format -- --check",
+    "format:fix": "npm run format -- --write",
+    "lint": "eslint \"{src,apps,libs}/**/*.ts\" --fix",
+    "compliance": "npm run format:fix && npm run lint"
+  },
+  "dependencies": {
+    "@formkit/tempo": "^0.0.19",
+    "@middy/core": "^4.7.0",
+    "@middy/http-cors": "^4.7.0",
+    "@middy/http-header-normalizer": "^4.7.0",
+    "@middy/http-json-body-parser": "^4.7.0",
+    "@middy/http-security-headers": "^4.7.0",
+    "axios": "^1.7.7",
+    "mysql2": "^3.11.3",
+    "winston": "^3.15.0",
+    "xss": "^1.0.15",
+    "zod": "^3.23.8"
+  },
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "project": "tsconfig.json",
+      "sourceType": "module"
+    },
+    "plugins": [
+      "@typescript-eslint/eslint-plugin"
+    ],
+    "extends": [
+      "plugin:@typescript-eslint/recommended",
+      "plugin:prettier/recommended"
+    ],
+    "root": true,
+    "env": {
+      "node": true,
+      "es6": true
+    },
+    "rules": {
+      "@typescript-eslint/interface-name-prefix": "off",
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-vars": "off"
+    }
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "bracketSpacing": true,
+    "embeddedLanguageFormatting": "auto",
+    "htmlWhitespaceSensitivity": "css",
+    "insertPragma": false,
+    "jsxBracketSameLine": false,
+    "jsxSingleQuote": false,
+    "printWidth": 100,
+    "proseWrap": "preserve",
+    "quoteProps": "as-needed",
+    "requirePragma": false,
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "es5",
+    "useTabs": false,
+    "vueIndentScriptAndStyle": false
+  }
 }

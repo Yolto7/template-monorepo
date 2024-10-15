@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Serverless Offline",
+      "program": "${workspaceFolder}/packages/people/src/index.ts",
+      "outFiles": ["${workspaceFolder}/packages/people/.build/**/*.js"],
+      "runtimeExecutable": "${workspaceFolder}/debug.sh",
+      "runtimeArgs": ["people"],
+      "env": {
+        "NODE_ENV": "debug"
+      }
+    }
+  ]
+}

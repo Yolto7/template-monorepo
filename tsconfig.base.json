@@ -6,6 +6,16 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "strict": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "preserveConstEnums": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "downlevelIteration": true,
+    "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
       "@template/shared/*": ["packages/shared/src/*"]

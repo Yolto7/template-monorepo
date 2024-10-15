@@ -3,14 +3,69 @@
   "version": "1.0.0",
   "main": "dist/index.js",
   "keywords": [],
-  "author": "",
+  "author": "Joaquin",
   "license": "ISC",
   "description": "",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/index.js"
+    "build": "rimraf -rf .build && tsc -b",
+    "start": "node dist/index.js",
+    "test": "jest",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "npm run format -- --check",
+    "format:fix": "npm run format -- --write",
+    "lint": "eslint \"{src,apps,libs}/**/*.ts\" --fix",
+    "compliance": "npm run format:fix && npm run lint"
   },
   "dependencies": {
-    "@template/shared": "*"
+    "@template/shared": "*",
+    "awilix": "^8.0.1",
+    "dotenv": "^16.4.5",
+    "mysql2": "^3.11.3",
+    "zod": "^3.23.8"
+  },
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "project": "tsconfig.json",
+      "sourceType": "module"
+    },
+    "plugins": [
+      "@typescript-eslint/eslint-plugin"
+    ],
+    "extends": [
+      "plugin:@typescript-eslint/recommended",
+      "plugin:prettier/recommended"
+    ],
+    "root": true,
+    "env": {
+      "node": true,
+      "es6": true
+    },
+    "rules": {
+      "@typescript-eslint/interface-name-prefix": "off",
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-vars": "off"
+    }
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "bracketSpacing": true,
+    "embeddedLanguageFormatting": "auto",
+    "htmlWhitespaceSensitivity": "css",
+    "insertPragma": false,
+    "jsxBracketSameLine": false,
+    "jsxSingleQuote": false,
+    "printWidth": 100,
+    "proseWrap": "preserve",
+    "quoteProps": "as-needed",
+    "requirePragma": false,
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "es5",
+    "useTabs": false,
+    "vueIndentScriptAndStyle": false
   }
 }

@@ -1,81 +1,86 @@
-# Turborepo starter
+# Serverless - AWS Node.js, Typescript, TurboRepo, Middy and MySQL
 
-This is an official starter Turborepo.
+Serverless Framework with TypeScript with Clean Arquitecture and DDD Architecture.
 
-## Using this example
+## Prerequisites
 
-Run the following command:
+Remember to previously have installed nodejs, serverless-framework, turborepo and mysql.
 
-```sh
-npx create-turbo@latest
-```
+- [`node.js`](https://nodejs.org)
+- [`serverless-framework`](https://github.com/serverless/serverless)
+- [`turborepo`](https://turbo.build/)
+- [`mysql`](https://sidorares.github.io/node-mysql2/docs)
 
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+Run the sql script inside the database folder, so that it creates the database and its corresponding table.
 
 ```
-cd my-turborepo
-pnpm build
-```
+CREATE DATABASE recruitment;
 
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+CREATE TABLE people (
+  id VARCHAR(32) PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  height INTEGER NOT NULL,
+  mass INTEGER NOT NULL,
+  hairColor VARCHAR(50) NOT NULL,
+  skinColor VARCHAR(50) NOT NULL,
+  eyeColor VARCHAR(50) NOT NULL,
+  birthYear VARCHAR(50) NOT NULL,
+  gender VARCHAR(10) NOT NULL,
+  createdAt datetime NOT NULL,
+  createdBy varchar(255) NOT NULL,
+  updatedAt datetime DEFAULT NULL,
+  updatedBy varchar(255) DEFAULT NULL,
+  deletedAt datetime DEFAULT NULL,
+  deletedBy varchar(255) DEFAULT NULL,
+  deleted tinyint (1) DEFAULT '0'
+);
 
 ```
-npx turbo link
+
+## Run the project locally
+
+- step 1: Install all dependencies with the 'npm install' command.
+- step 2: Read the README.md file of the people package.
+- step 3: Create a debug script (launch.json) with the following code to run the project in debug mode.
+
+```
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Serverless Offline",
+      "program": "${workspaceFolder}/packages/people/src/index.ts",
+      "outFiles": ["${workspaceFolder}/packages/people/.build/**/*.js"],
+      "runtimeExecutable": "${workspaceFolder}/debug.sh",
+      "runtimeArgs": ["people"],
+      "env": {
+        "NODE_ENV": "debug"
+      }
+    }
+  ]
+}
 ```
 
-## Useful Links
+- step 4: Run the 'npm run build' command to launch the application locally.
 
-Learn more about the power of Turborepo:
+The swagger file is located in the path: packages/people/doc
 
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+## Deploy the project
+
+You must be in the root of the project and run the following command:
+
+```
+./deploy.sh -p people -s dev
+```
+
+## Remove the project
+
+You must be in the root of the project and run the following command:
+
+```
+./remove.sh -p people -s dev
+```
+
+Happy Code 🎸
