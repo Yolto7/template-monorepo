@@ -1,4 +1,4 @@
-service: knta-0013-recrt-st-00-people
+service: monorepo
 frameworkVersion: '3'
 useDotenv: true
 
