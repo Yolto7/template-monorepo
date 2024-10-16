@@ -8,7 +8,6 @@
   "description": "",
   "scripts": {
     "build": "rimraf -rf .build && tsc -b",
-    "start": "node dist/index.js",
     "test": "jest",
     "format": "prettier --write \"src/**/*.ts\"",
     "format:check": "npm run format -- --check",
@@ -67,5 +66,16 @@
     "trailingComma": "es5",
     "useTabs": false,
     "vueIndentScriptAndStyle": false
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ]
   }
 }
