@@ -1,69 +1,135 @@
-import { CriteriaConverter, Logger, MysqlClientFactory, UserAuthProvider } from '@template/shared';
-
-import { config } from '../../../src/config';
-import { People } from '../../../src/domain/entities/people.entity';
-import { PeopleMapper } from '../../../src/infrastructure/mappers/people.mapper';
 import PeopleMysqlRepository from '../../../src/infrastructure/repositories/people-mysql.repository';
+import { People } from '../../../src/domain/entities/people.entity';
+import {
+  Logger,
+  MysqlClientFactory,
+  CriteriaConverter,
+  UserAuthProvider,
+  // AppError,
+  UniqueEntityId,
+} from '@template/shared';
+import { Config } from '../../../src/config';
+import { PeopleMapper } from '../../../src/infrastructure/mappers/people.mapper';
+// import { RowDataPacket } from 'mysql2/promise';
 
-const dbMock = {
-    query: jest.fn(),
-  } as unknown as MysqlClientFactory,
-  loggerMock = {
-    info: jest.fn(),
-    error: jest.fn(),
-    debug: jest.fn(),
-  } as unknown as Logger,
-  criteriaConverterMock = {
-    convert: jest.fn(),
-  } as unknown as CriteriaConverter,
-  userAuthProviderMock = {
-    get: jest.fn(),
-  } as unknown as UserAuthProvider;
+jest.mock('@template/shared', () => ({
+  Logger: jest.fn(),
+  MysqlClientFactory: jest.fn(),
+  CriteriaConverter: jest.fn(),
+  UserAuthProvider: jest.fn(),
+  AppError: jest.requireActual('@template/shared').AppError,
+  ErrorTypes: jest.requireActual('@template/shared').ErrorTypes,
+}));
 
-describe('PeopleRepository', () => {
-  let peopleRepository: PeopleMysqlRepository;
+describe('PeopleMysqlRepository', () => {
+  let repository: PeopleMysqlRepository;
+  let dbMock: MysqlClientFactory;
+  let loggerMock: Logger;
+  let criteriaConverterMock: CriteriaConverter;
+  let userAuthProviderMock: UserAuthProvider;
+  let config: Config;
 
   beforeEach(() => {
-    peopleRepository = new PeopleMysqlRepository(
+    dbMock = { query: jest.fn() } as unknown as MysqlClientFactory;
+    loggerMock = { error: jest.fn(), info: jest.fn() } as unknown as Logger;
+    criteriaConverterMock = { convert: jest.fn() } as unknown as CriteriaConverter;
+    userAuthProviderMock = { get: jest.fn() } as unknown as UserAuthProvider;
+    config = { PEOPLE_TABLE_NAME: 'people' } as Config;
+
+    repository = new PeopleMysqlRepository(
       config,
       loggerMock,
       dbMock,
       criteriaConverterMock,
       userAuthProviderMock
     );
+  });
+
+  afterEach(() => {
     jest.clearAllMocks();
   });
 
   describe('create', () => {
     it('should insert a person into the database', async () => {
-      // Simulamos que el query de la base de datos no devuelve errores
-      // dbMock.query.mockResolvedValueOnce({});
-
       const people = People.create({
         name: 'John Doe',
-        height: 12,
-        mass: 12,
-        hairColor: 'normal',
-        skinColor: 'normal',
-        eyeColor: 'normal',
-        birthYear: 'normal',
-        gender: 'normal',
+        height: 180,
+        mass: 75,
+        hairColor: 'brown',
+        skinColor: 'fair',
+        eyeColor: 'blue',
+        birthYear: '1990',
+        gender: 'male',
       });
 
-      await peopleRepository.create(people);
+      jest.spyOn(PeopleMapper, 'toCreatePersistence').mockReturnValue({
+        id: UniqueEntityId.random(),
+        name: 'John Doe',
+        height: 180,
+        mass: 75,
+        hairColor: 'brown',
+        skinColor: 'fair',
+        eyeColor: 'blue',
+        birthYear: '1990',
+        gender: 'male',
+      });
 
-      const keys: unknown[] = [],
-        values: unknown[] = [];
+      await repository.create(people);
 
-      for (const [key, value] of Object.entries(PeopleMapper.toCreatePersistence(people))) {
-        keys.push(key);
-        values.push(value);
-      }
-
-      expect(dbMock.query).toHaveBeenCalledWith(
-        `INSERT INTO people (${keys.join(', ')}) VALUES (${Array(keys.length).fill('?').join(', ')})`,
-        values
-      );
+      expect(dbMock.query).toHaveBeenCalledWith({
+        sql: `INSERT INTO people(name, height, mass, hairColor, skinColor, eyeColor, birthYear, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        values: ['John Doe', 180, 75, 'brown', 'fair', 'blue', '1990', 'male'],
+      });
     });
   });
+
+  /* describe('matching', () => {
+    it('should return matching results from database', async () => {
+      const input = {
+        criteria: {},
+        isTotal: true,
+      };
+
+      criteriaConverterMock.convert.mockReturnValue({
+        filter: 'WHERE name = ?',
+        sort: 'ORDER BY name ASC',
+        values: ['John Doe'],
+        page: 1,
+        take: 10,
+      });
+
+      const mockRows: RowDataPacket[] = [
+        {
+          id: UniqueEntityId.random(),
+          name: 'John Doe',
+          height: 180,
+          mass: 75,
+          hairColor: 'brown',
+          skinColor: 'fair',
+          eyeColor: 'blue',
+          birthYear: '1990',
+          gender: 'male',
+        },
+      ] as RowDataPacket[];
+
+      dbMock.query.mockResolvedValueOnce([mockRows]).mockResolvedValueOnce([{ total: 1 }]);
+
+      const result = await repository.matching(input);
+
+      expect(result.people.length).toBe(1);
+      expect(result.total).toBe(1);
+      expect(result.people[0].name).toBe('John Doe');
+    });
+
+    it('should log error and throw AppError if matching query fails', async () => {
+      const input = { criteria: {}, isTotal: true };
+      const error = new Error('DB error');
+      dbMock.query.mockRejectedValueOnce(error);
+
+      await expect(repository.matching(input)).rejects.toThrow(AppError);
+      expect(loggerMock.error).toHaveBeenCalledWith(
+        expect.stringContaining('Error in PeopleRepository of matching')
+      );
+    });
+  }); */
 });

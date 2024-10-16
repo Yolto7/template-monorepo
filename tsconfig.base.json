@@ -20,5 +20,6 @@
     "paths": {
       "@template/shared/*": ["packages/shared/src/*"]
     }
-  }
+  },
+  "exclude": ["node_modules", "dist"]
 }
