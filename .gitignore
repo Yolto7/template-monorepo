@@ -4,10 +4,24 @@
 node_modules
 .pnp
 .pnp.js
+.vscode
+logs
+.serverless
+.build
+package-lock.json
+
+# Packages
+packages/*/node_modules
+packages/*/logs
+packages/*/.serverless
+packages/*/.build
+packages/*/.turbo
+packages/*/.env
+packages/*/.env.*
 
 # Local env files
 .env
-.env.local
+.env.*
 .env.development.local
 .env.test.local
 .env.production.local
