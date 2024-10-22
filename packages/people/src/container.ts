@@ -60,17 +60,16 @@ export const loadContainer = async (): Promise<AwilixContainer<Cradle>> => {
       .inject((container: AwilixContainer) => ({
         isDebug: container.cradle.config.isDebug,
       }))
-      .singleton()
-      .scoped(),
+      .singleton(),
 
     // Middlewares
-    errorInterceptor: asClass(ErrorInterceptor).singleton().scoped(),
+    errorInterceptor: asClass(ErrorInterceptor).singleton(),
 
     // Criteria
-    mysqlCriteriaConverter: asClass(MysqlCriteriaConverter).singleton().scoped(),
+    mysqlCriteriaConverter: asClass(MysqlCriteriaConverter).singleton(),
 
     // UserAuth Provider
-    userAuthProvider: asClass(UserAuthProvider).singleton().scoped(),
+    userAuthProvider: asClass(UserAuthProvider).singleton(),
 
     // Repositories
     peopleMysqlRepository: asClass(PeopleMysqlRepository)
@@ -84,7 +83,7 @@ export const loadContainer = async (): Promise<AwilixContainer<Cradle>> => {
       .inject((container: AwilixContainer) => ({
         peopleRepository: container.cradle.peopleMysqlRepository,
       }))
-      .scoped(),
+      .transient(),
 
     // Application Services
     peopleQueriesService: asClass(PeopleQueriesService)
@@ -92,16 +91,16 @@ export const loadContainer = async (): Promise<AwilixContainer<Cradle>> => {
         peopleRepository: container.cradle.peopleMysqlRepository,
         swapiProxyPort: container.cradle.swapiProxyAdapter,
       }))
-      .scoped(),
+      .transient(),
 
     peopleCreateCommandService: asClass(PeopleCreateCommandService)
       .inject((container: AwilixContainer) => ({
         peopleRepository: container.cradle.peopleMysqlRepository,
       }))
-      .scoped(),
+      .transient(),
 
     // Infrastructure Adapters
-    swapiProxyAdapter: asClass(SwapiProxyAdapter).transient(),
+    swapiProxyAdapter: asClass(SwapiProxyAdapter).singleton(),
 
     // Presentation Controllers
     peoplePrivateController: asClass(PeoplePrivateController).scoped(),
