@@ -1,11 +1,10 @@
-import { RowDataPacket } from 'mysql2/promise';
+import { RowDataPacket, Pool } from 'mysql2/promise';
 
 import {
   AppError,
   CriteriaConverter,
   ErrorTypes,
   Logger,
-  MysqlClientFactory,
   MysqlConverterResult,
   RECRUITMENT_CONSTANTS,
   UserAuthProvider,
@@ -26,7 +25,7 @@ export default class PeopleMysqlRepository implements PeopleRepository {
   constructor(
     private readonly config: Config,
     private readonly logger: Logger,
-    private readonly db: MysqlClientFactory,
+    private readonly db: Pool,
     private readonly criteriaConverter: CriteriaConverter,
     private readonly userAuthProvider: UserAuthProvider
   ) {

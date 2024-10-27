@@ -1,4 +1,5 @@
 import { createContainer, InjectionMode, asValue, AwilixContainer, asClass } from 'awilix';
+import { Pool } from 'mysql2/promise';
 
 import {
   Logger,
@@ -22,7 +23,7 @@ import { SwapiProxyAdapter } from './infrastructure/adapters/swapiProxy-axios.ad
 
 export interface Cradle {
   config: Config;
-  db: MysqlClientFactory;
+  db: Pool;
   axios: AxiosInstance;
   logger: Logger;
 
@@ -110,7 +111,7 @@ export const loadContainer = async (): Promise<AwilixContainer<Cradle>> => {
   container.register({
     // Database
     db: asValue(
-      MysqlClientFactory.getInstance(
+      MysqlClientFactory.getClient(
         {
           DATABASE_HOST: container.cradle.config.DATABASE_HOST,
           DATABASE_PORT: container.cradle.config.DATABASE_PORT,

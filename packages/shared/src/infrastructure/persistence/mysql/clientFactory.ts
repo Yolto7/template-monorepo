@@ -1,4 +1,4 @@
-import { createPool, FieldPacket, Pool, QueryOptions, QueryResult } from 'mysql2/promise';
+import { createPool, Pool } from 'mysql2/promise';
 
 import { Logger } from '../../../domain/logger';
 
@@ -21,12 +21,12 @@ export class MysqlClientFactory {
     this.client = this.createPool(this.config);
   }
 
-  static getInstance(config: ConfigDb, logger: Logger): MysqlClientFactory {
+  static getClient(config: ConfigDb, logger: Logger): Pool {
     if (!MysqlClientFactory.instance) {
       MysqlClientFactory.instance = new MysqlClientFactory(config, logger);
     }
 
-    return MysqlClientFactory.instance;
+    return MysqlClientFactory.instance.client;
   }
 
   private createPool(config: ConfigDb): Pool {
@@ -43,7 +43,7 @@ export class MysqlClientFactory {
     });
   }
 
-  query<T extends QueryResult>(options: QueryOptions): Promise<[T, FieldPacket[]]> {
-    return this.client.query<T>(options);
-  }
+  // query<T extends QueryResult>(options: QueryOptions): Promise<[T, FieldPacket[]]> {
+  //   return this.client.query<T>(options);
+  // }
 }
