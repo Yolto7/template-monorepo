@@ -42,8 +42,4 @@ export class MysqlClientFactory {
       idleTimeout: 20000,
     });
   }
-
-  // query<T extends QueryResult>(options: QueryOptions): Promise<[T, FieldPacket[]]> {
-  //   return this.client.query<T>(options);
-  // }
 }
