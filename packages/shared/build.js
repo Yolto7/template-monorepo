@@ -11,10 +11,11 @@ const buildPackage = async (entry, outdir) => {
     outdir,
     bundle: true,
     minify: true,
+    sourcemap: true,
     platform: 'node',
     plugins: [dtsPlugin({})],
     external: sharedDeps,
   });
 };
 
-buildPackage('src/**/*.ts', 'dist');
+buildPackage('src/**/*.ts', '.build');

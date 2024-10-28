@@ -9,6 +9,7 @@ const buildPackage = async (entry, outdir) => {
     outdir,
     bundle: true,
     minify: true,
+    sourcemap: true,
     platform: 'node',
     external: sharedDeps,
   });
