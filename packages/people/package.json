@@ -7,7 +7,7 @@
   "license": "ISC",
   "description": "",
   "scripts": {
-    "build": "rimraf -rf .build && tsc -b",
+    "build": "rimraf -rf dist && tsc -b",
     "test": "jest",
     "format": "prettier --write \"src/**/*.ts\"",
     "format:check": "npm run format -- --check",
