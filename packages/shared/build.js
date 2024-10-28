@@ -18,4 +18,4 @@ const buildPackage = async (entry, outdir) => {
   });
 };
 
-buildPackage('src/**/*.ts', '.build');
+buildPackage('src/**/*.ts', 'dist');
