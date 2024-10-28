@@ -9,7 +9,7 @@ export interface Config extends ConfigBase {
   SWAPI_API_BASE_URL: string;
 }
 
-export const config = {
+export const configuration = {
   NODE_ENV: process.env.NODE_ENV || 'staging',
   PORT: Number(process.env.PORT) || 3000,
 

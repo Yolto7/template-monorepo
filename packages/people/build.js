@@ -8,10 +8,13 @@ const buildPackage = async (entry, outdir) => {
     entryPoints: [entry],
     outdir,
     bundle: true,
-    minify: true,
+    minify: false,
     sourcemap: true,
     platform: 'node',
+    target: 'node18',
     external: sharedDeps,
+    keepNames: true, // Mantiene los nombres de las clases y funciones
+    tsconfig: 'tsconfig.json',
   });
 };
 
