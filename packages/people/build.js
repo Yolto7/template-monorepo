@@ -12,9 +12,9 @@ const buildPackage = async (entry, outdir) => {
     sourcemap: true,
     platform: 'node',
     target: 'node18',
-    external: sharedDeps,
-    keepNames: true, // Mantiene los nombres de las clases y funciones
+    keepNames: true,
     tsconfig: 'tsconfig.json',
+    external: sharedDeps,
   });
 };
 

@@ -10,11 +10,14 @@ const buildPackage = async (entry, outdir) => {
     entryPoints: [entry],
     outdir,
     bundle: true,
-    minify: true,
+    minify: false,
     sourcemap: true,
     platform: 'node',
-    plugins: [dtsPlugin({})],
+    target: 'node18',
+    keepNames: true,
+    tsconfig: 'tsconfig.json',
     external: sharedDeps,
+    plugins: [dtsPlugin({})],
   });
 };
 
