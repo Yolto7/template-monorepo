@@ -48,6 +48,7 @@ export * from './infrastructure/providers/userAuth.provider';
 export * from './infrastructure/persistence/sql/pagination';
 export * from './infrastructure/persistence/mysql/criteriaConverter';
 export * from './infrastructure/persistence/mysql/clientFactory';
+export * from './infrastructure/persistence/dynamo/clientFactory';
 
 export * from './infrastructure/validator/zod.validator';
 

@@ -18,7 +18,7 @@ export class MysqlClientFactory {
     private readonly config: ConfigDb,
     private readonly logger: Logger
   ) {
-    this.client = this.createPool(this.config);
+    this.client = this.createPool();
   }
 
   static getClient(config: ConfigDb, logger: Logger): Pool {
@@ -29,14 +29,14 @@ export class MysqlClientFactory {
     return MysqlClientFactory.instance.client;
   }
 
-  private createPool(config: ConfigDb): Pool {
+  private createPool(): Pool {
     this.logger.info(`Database pool created`);
     return createPool({
-      host: config.DATABASE_HOST,
-      port: config.DATABASE_PORT || 3306,
-      user: config.DATABASE_USER,
-      password: config.DATABASE_PASSWORD,
-      database: config.DATABASE_NAME,
+      host: this.config.DATABASE_HOST,
+      port: this.config.DATABASE_PORT || 3306,
+      user: this.config.DATABASE_USER,
+      password: this.config.DATABASE_PASSWORD,
+      database: this.config.DATABASE_NAME,
       connectionLimit: 10000,
       connectTimeout: 20000,
       idleTimeout: 20000,

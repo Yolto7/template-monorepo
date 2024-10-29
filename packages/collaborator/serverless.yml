@@ -1,0 +1,45 @@
+service: monorepo2
+frameworkVersion: '3'
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ${opt:region, "us-east-1"}
+  stage: ${opt:stage, "dev"}
+  timeout: 30
+  apiName: ${self:service}
+
+plugins:
+  - serverless-offline
+  - serverless-deployment-bucket
+  - serverless-prune-plugin
+  - serverless-plugin-monorepo
+  - serverless-dotenv-plugin
+
+package:
+  individually: true
+
+custom:
+  serverless-offline:
+    httpPort: ${env:PORT, 3000}
+    noPrependStageInUrl: true
+  dotenv:
+    path: .env
+    exclude:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_REGION_NAME
+      - AWS_SESSION_TOKEN
+  prune:
+    automatic: true
+    number: 3
+
+functions:
+  getByDocument:
+    handler: dist/index.getByDocument
+    events:
+      - http:
+          path: /collaborator/{documentNumber}
+          method: get
+          cors: true
