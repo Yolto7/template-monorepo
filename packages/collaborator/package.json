@@ -16,7 +16,7 @@
     "compliance": "npm run format:fix && npm run lint"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.592.0",
+    "@aws-sdk/client-dynamodb": "^3.679.0",
     "@aws-sdk/util-dynamodb": "^3.679.0",
     "@template/shared": "*",
     "awilix": "^8.0.1",

@@ -15,7 +15,7 @@
     "compliance": "npm run format:fix && npm run lint"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.592.0",
+    "@aws-sdk/client-dynamodb": "^3.679.0",
     "@formkit/tempo": "^0.0.19",
     "@middy/core": "^4.7.0",
     "@middy/http-cors": "^4.7.0",
